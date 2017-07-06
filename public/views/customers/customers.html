@@ -1,0 +1,30 @@
+<div class="jumbotron">
+    <h1>Customers Page</h1>
+    <div class="container">
+        <div class="row" style="padding-top:5px;">
+            <div class="pull-right">
+                <div class="btn btn-default" ng-click="checkCustomers()">Test</div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <table class="table table-bordered table-hover" ng-init="readAllCustomers()">
+            <th>
+                <tr>
+                    <td>ID</td>
+                    <td>Name</td>
+                    <td>Address</td>
+                    <td>Phone</td>
+                    <td>Email</td>
+                    <td colspan="7">Function</td>
+                </tr>
+            </th>
+            <tr ng-repeat="customers in readCustomersData">
+                <td></td>
+                <td>{{customers.name}}</td>
+                <td>{{customers.address}}</td>
+                <td>{{customers.phone}}</td>
+                <td>{{customers.email}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
