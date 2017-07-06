@@ -1,5 +1,5 @@
    (function(){
-    app.controller("globalCtrl", function ($scope) {
+    angular.module("MainApp").controller("globalCtrl", function ($scope) {
         $scope.pageData = [
             {Name: 'Home'},
             {Name: 'Customers'}

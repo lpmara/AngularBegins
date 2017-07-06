@@ -1,7 +1,6 @@
-var app = {};
 (function() {
-app = angular.module("MainApp", ['ngRoute', 'ngSanitize', 'ngResource', 'ngAnimate', 'mgcrea.ngStrap'])
-app.config(function ($routeProvider, $locationProvider) {
+angular.module("MainApp", ['ngRoute', 'ngSanitize', 'ngResource', 'ngAnimate', 'mgcrea.ngStrap'])
+angular.module("MainApp").config(function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(false).hashPrefix('!');
     $routeProvider
         .when("/", {

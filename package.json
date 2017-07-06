@@ -5,6 +5,7 @@
     "scripts": {
         "start": "gulp",
         "test": "./node_modules/.bin/mocha ./test/*",
+        "eslint": "./node_modules/.bin/eslint ./public/js/**/*.js",
         "nyc": "nyc --reporter=lcov --reporter=text-lcov mocha"
     },
     "dependencies": {
@@ -70,9 +71,10 @@
         "winston": "^2.1.1"
     },
     "devDependencies": {
+        "babel-preset-es2015": "^6.24.1",
         "codecov": "^2.2.0",
         "eslint": "^4.1.1",
+        "gulp-babel": "^6.1.2",
         "nyc": "^11.0.3"
     }
-  
 }
