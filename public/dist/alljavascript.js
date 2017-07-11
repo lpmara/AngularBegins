@@ -24,7 +24,7 @@ app.config(function ($routeProvider, $locationProvider) {
  
 // })();
    (function(){
-    app.controller("globalCtrl", function ($scope) {
+    angular.module("MainApp").controller("globalCtrl", function ($scope) {
         $scope.pageData = [
             {Name: 'Home'},
             {Name: 'Customers'}
@@ -33,89 +33,87 @@ app.config(function ($routeProvider, $locationProvider) {
     });
    })();
 (function () {
-    console.log('Check point1');
-    app.controller('customersCtrl', ($scope) => {
-        console.log('OK');
-    //     $scope.activePage = 2; //"Customers";
-    //     $scope.readCustomersData = [];
-
-    //     $scope.createNewCustomers = function () {
-    //         customersService.createNewCustomers($scope.modalData).then((result) => {
-    //             if (result) {
-    //                 $scope.readCustomersData.push(result.data);
-    //             }
-    //         });
-    //     }
-    //     $scope.modalData = {};
-    //     $scope.readAllCustomers = function () {
-    //         console.log('OK');
-    //         customersService.readAllCustomers().then((result) => {
-    //             if (result != null) { 
+    angular.module("MainApp").controller('customersCtrl', function($scope,$modal,customersService)  {        
+        $scope.activePage = 2; //"Customers";
+        $scope.readCustomersData = [];
+        console.log("HELLO");
+        $scope.createNewCustomers = function () {
+            customersService.createNewCustomers($scope.modalData).then((result) => {
+                if (result) {
+                    $scope.readCustomersData.push(result.data);
+                }
+            });
+        }
+        $scope.modalData = {};
+        $scope.readAllCustomers = function () {
+            console.log('OK');
+            customersService.readAllCustomers().then((result) => {
+                if (result != null) { 
                     
-    //                 $scope.readCustomersData = result.data;
-    //             }
-    //         });
-    //     };
-    //     $scope.updateCustomers = function () {
-    //         var id = $scope.currentID;
-    //         var index = $scope.currentIndex;
-    //         customersService.updateCustomers($scope.modalData, id).then((result) => {
-    //             if (result) {
-    //                 $scope.readCustomersData[index] = $scope.modalData;
-    //             }
-    //         });
-    //     };
+                    $scope.readCustomersData = result.data;
+                }
+            });
+        };
+        $scope.updateCustomers = function () {
+            var id = $scope.currentID;
+            var index = $scope.currentIndex;
+            customersService.updateCustomers($scope.modalData, id).then((result) => {
+                if (result) {
+                    $scope.readCustomersData[index] = $scope.modalData;
+                }
+            });
+        };
 
-    //     $scope.deleteSample = function () {
-    //         var id = $scope.currentID;
-    //         var index = $scope.currentIndex;
-    //         customersService.deleteSample(id).then((result) => {
-    //             if (result) {
-    //                 $scope.readCustomersData.splice(index, 1);
-    //             }
-    //         });
-    //     };
+        $scope.deleteSample = function () {
+            var id = $scope.currentID;
+            var index = $scope.currentIndex;
+            customersService.deleteSample(id).then((result) => {
+                if (result) {
+                    $scope.readCustomersData.splice(index, 1);
+                }
+            });
+        };
 
-    //     $scope.checkData = function () {
-    //         switch ($scope.modalMode) {
-    //             case "create":
-    //                 $scope.createNewCustomers();
-    //                 break;
-    //             case "edit":
-    //                 $scope.updateCustomers();
-    //                 break;
-    //         }
-    //     }
-    //     $scope.showCustomers = function (type, id, index) {
-    //         $scope.modalMode = type;
-    //         $scope.currentID = id;
-    //         $scope.currentIndex = index;
-    //         var myOtherModal = $modal({ scope: $scope, template: '/views/sample/modal/customersModal.ejs', show: false });
+        $scope.checkData = function () {
+            switch ($scope.modalMode) {
+                case "create":
+                    $scope.createNewCustomers();
+                    break;
+                case "edit":
+                    $scope.updateCustomers();
+                    break;
+            }
+        }
+        $scope.showCustomers = function (type, id, index) {
+            $scope.modalMode = type;
+            $scope.currentID = id;
+            $scope.currentIndex = index;
+            var myOtherModal = $modal({ scope: $scope, template: '/views/sample/modal/customersModal.html', show: false });
 
-    //         switch (type) {
-    //             case 'create':
-    //                 $scope.modalData = {};
-    //                 $scope.modalData.readOnly = false;
-    //                 myOtherModal.$promise.then(myOtherModal.show);
-    //                 break;
-    //             case 'edit':
-    //                 $scope.read(id, function (result) {
-    //                     if (result != "ERROR") {
-    //                         myOtherModal.$promise.then(myOtherModal.show);
-    //                         $scope.modalData = result;
-    //                         $scope.modalData.bCreate = JSON.parse(result.bCreate);
-    //                         $scope.modalData.readOnly = false;
-    //                     }
-    //                 });
-    //                 break;
-    //         }
-    //     };
+            switch (type) {
+                case 'create':
+                    $scope.modalData = {};
+                    $scope.modalData.readOnly = false;
+                    myOtherModal.$promise.then(myOtherModal.show);
+                    break;
+                case 'edit':
+                    $scope.read(id, function (result) {
+                        if (result != "ERROR") {
+                            myOtherModal.$promise.then(myOtherModal.show);
+                            $scope.modalData = result;
+                            $scope.modalData.bCreate = JSON.parse(result.bCreate);
+                            $scope.modalData.readOnly = false;
+                        }
+                    });
+                    break;
+            }
+        };
 
     });
 })();
 (function () {
-    app.factory('customersService', ($http, $q) => {
-        let x = {};
+    angular.module("MainApp").factory('customersService', ($http, $q) => {
+        var x = {};
         x.readAllCustomers = () => {
             var defer = $q.defer();
             $http(
@@ -208,8 +206,7 @@ app.config(function ($routeProvider, $locationProvider) {
 
 
 (function(){
-    app.controller('mainCtrl', function ($scope) {
+    angular.module("MainApp").controller('mainCtrl', function ($scope) {
         $scope.activePage = 1; // Home     
     });
 })();
-

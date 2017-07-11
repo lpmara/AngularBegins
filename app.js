@@ -5,8 +5,8 @@ var expressLayouts = require('express-ejs-layouts');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var index = require('./routes/index');
-var customers = require('./routes/customers');
+var index = require('./api/index');
+var customers = require('./api/customers');
 
 
 var debug = require('debug')('Blank_GULP_Mean');

@@ -1,6 +1,6 @@
 (function () {
-    app.factory('customersService', ($http, $q) => {
-        let x = {};
+    angular.module("MainApp").factory('customersService', ($http, $q) => {
+        var x = {};
         x.readAllCustomers = () => {
             var defer = $q.defer();
             $http(
@@ -9,9 +9,6 @@
                     url: '/customers',
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json'
-                    // headers: {
-                    //     'RequestVerificationToken': token
-                    // }
                 })
                 .then((result) => {
                     defer.resolve(result);
