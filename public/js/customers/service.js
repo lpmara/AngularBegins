@@ -12,78 +12,97 @@
                 })
                 .then((result) => {
                     defer.resolve(result);
+                    console.log('Can Read All Customers.');
                 }).catch((result) => {
                     defer.reject(result);
+                    console.log('Cannot Read Customers.');
                 });
             return defer.promise;
         };
 
-        x.createNewCustomers = function (obj) {
+        x.readCustomers = ((id) => {
+            console.log(id);
+            var defer = $q.defer();
+            $http({
+                method: 'GET',
+                url: '/customers/edit/' + id,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
+            }).then((data) => {
+                defer.resolve(data);
+                console.log('Can get data from DB.');
+            }).catch((data) => {
+                defer.reject(data);
+                console.log('Cannot get data from DB.');
+            });
+            return defer.promise;
+        });
+
+        x.createNewCustomers = ((obj) => {
+            console.log(obj.name);
             var defer = $q.defer();
             $http({
                 method: "POST",
                 url: '/customers/saveadd',
                 contentType: 'application/json; charset=utf-8',
                 data: {
-                    Name: obj.name,
-                    Address: obj.address,
-                    Email: obj.email,
-                    Phone: obj.phone
+                    name: obj.name,
+                    address: obj.address,
+                    email: obj.email,
+                    phone: obj.phone
                 },
                 dataType: 'json'
-                // headers: {
-                //     'RequestVerificationToken': token
-                // }
-            }).then(function (data) {
+            }).then((data) => {
                 defer.resolve(data);
-            }, function (data) {
+                console.log('User Created.');
+            }).catch((data) => {
                 defer.reject(data);
+                console.log('User Cannot Create.');
             });
             return defer.promise;
-        };
+        });
 
-        x.updateCustomers = function (obj, id) {
+        x.updateCustomers = ((obj, id) => {
             var defer = $q.defer();
             $http({
                 method: "POST",
-                url: '/save_edit/' + id,
+                url: '/customers/save_edit/' + id,
                 data: {
-                    Name: obj.name,
-                    Address: obj.address,
-                    Email: obj.email,
-                    Phone: obj.phone
+                    name: obj.name,
+                    address: obj.address,
+                    email: obj.email,
+                    phone: obj.phone
                 },
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json'
-                // headers: {
-                //     'RequestVerificationToken': token
-                // }
-            }).then(function (data) {
+            }).then((data) => {
                 defer.resolve(data);
-            }, function (data) {
+                console.log('User Updated.');
+            }).catch((data) => {
                 defer.reject(data);
+                console.log(data);
+                console.log('User Cannot Update.');
             });
             return defer.promise;
-        };
+        });
 
-        x.deleteCustomers = function (id) {
+        x.deleteCustomers = ((id) => {
+            console.log(id);
             var defer = $q.defer();
             $http({
                 method: 'GET',
-                url: '/delete_customer/' + id,
+                url: '/customers/delete_customer/' + id,
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json'
-                // headers: {
-                //     'RequestVerificationToken': token
-                // }
-            }).then(function (data) {
+            }).then((data) => {
                 defer.resolve(data);
-            }, function (data) {
+                console.log('Deleted.');
+            }).catch((data) => {
                 defer.reject(data);
+                console.log('Cannot Delete');
             });
             return defer.promise;
-        };
-
+        });
         return x;
     });
 })();

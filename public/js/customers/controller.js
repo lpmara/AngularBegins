@@ -1,44 +1,51 @@
 (function () {
-    angular.module("MainApp").controller('customersCtrl', function($scope,$modal,customersService)  {        
+    angular.module("MainApp").controller('customersCtrl', function ($scope, $route, $modal, customersService) {
         $scope.activePage = 2; //"Customers";
         $scope.readCustomersData = [];
-        $scope.createNewCustomers = function () {
+
+        $scope.createNewCustomers = (() => {
             customersService.createNewCustomers($scope.modalData).then((result) => {
                 if (result) {
+                    $route.reload();
                     $scope.readCustomersData.push(result.data);
                 }
             });
-        }
+        });
         $scope.modalData = {};
-        $scope.readAllCustomers = function () {
+        $scope.readCustomers = ((id, cb) => {
+            customersService.readCustomers(id).then((result) => {
+                cb(result.data);
+            });
+        });
+        $scope.readAllCustomers = (() => {
             customersService.readAllCustomers().then((result) => {
-                if (result != null) { 
-                    
+                if (result != null) {
                     $scope.readCustomersData = result.data;
                 }
             });
-        };
-        $scope.updateCustomers = function () {
+        });
+        $scope.updateCustomers = (() => {
             var id = $scope.currentID;
             var index = $scope.currentIndex;
             customersService.updateCustomers($scope.modalData, id).then((result) => {
                 if (result) {
+                    $route.reload();
                     $scope.readCustomersData[index] = $scope.modalData;
                 }
             });
-        };
+        });
 
-        $scope.deleteSample = function () {
-            var id = $scope.currentID;
+        $scope.deleteCustomers = ((id) => {
             var index = $scope.currentIndex;
-            customersService.deleteSample(id).then((result) => {
+            customersService.deleteCustomers(id).then((result) => {
                 if (result) {
+                    $route.reload();
                     $scope.readCustomersData.splice(index, 1);
                 }
             });
-        };
+        });
 
-        $scope.checkData = function () {
+        $scope.checkData = (() => {
             switch ($scope.modalMode) {
                 case "create":
                     $scope.createNewCustomers();
@@ -47,31 +54,30 @@
                     $scope.updateCustomers();
                     break;
             }
-        }
-        $scope.showCustomers = function (type, id, index) {
+        });
+        $scope.showCustomers = ((type, id, index) => {
             $scope.modalMode = type;
             $scope.currentID = id;
             $scope.currentIndex = index;
-            var myOtherModal = $modal({ scope: $scope, template: '/views/sample/modal/customersModal.html', show: false });
+            var myOtherModal = $modal({ scope: $scope, template: '/views/customers/modal/customersModal.html', show: false });
 
             switch (type) {
                 case 'create':
                     $scope.modalData = {};
-                    $scope.modalData.readOnly = false;
                     myOtherModal.$promise.then(myOtherModal.show);
+
                     break;
                 case 'edit':
-                    $scope.read(id, function (result) {
+                    $scope.readCustomers(id, ((result) => {
+                        console.log(result);                   
                         if (result != "ERROR") {
                             myOtherModal.$promise.then(myOtherModal.show);
-                            $scope.modalData = result;
-                            $scope.modalData.bCreate = JSON.parse(result.bCreate);
-                            $scope.modalData.readOnly = false;
+                            $scope.modalData = result[0];
                         }
-                    });
+                    }));
                     break;
             }
-        };
+        });
 
     });
 })();

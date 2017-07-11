@@ -1,57 +1,68 @@
 var express = require('express');
 var router = express.Router();
 let customers = require('../models/customers.model.js');
-
-
-
+let customersStub = require('../test/models/customersStub.model.js');
 
 
 router.get('/', (req, res) => {
- 
+    if (req.headers["test"] == "true") {
+        customers = customersStub;
+    }
     customers.getAllCustomer().then((rows) => {
-        res.send(rows); 
+        res.send(rows);
+    }).catch(() => {
+        res.send('Error!');
     });
 });
 
 router.post('/saveadd', (req, res) => {
-    var input = JSON.parse(JSON.stringify(req.body));
-    var data = {
-        name: input.name,
-        address: input.address,
-        email: input.email,
-        phone: input.phone
+    if (req.headers["test"] == "true") {
+        customers = customersStub;
     }
-    customers.addCustomer(data).then(() => {
-        res.redirect('/customers');
+    var input = JSON.parse(JSON.stringify(req.body));
+    customers.addCustomer(input).then((rows) => {
+        res.send(rows);
+    }).catch(() => {
+        res.send('Error!');
     });
 });
 
 router.get('/edit/:id', (req, res) => {
-    let id = req.params.id;
-    customers.getCustomerById(id).then((rows) => {
-        res.render('edit_customer', {
-            layout: 'partial/shared',
-            data: rows
-        });
-    });
-});
-router.post('/save_edit/:id', (req, res) => {
-    let input = JSON.parse(JSON.stringify(req.body));
-    let id = req.params.id;
-    let data = {
-        name: input.name,
-        address: input.address,
-        email: input.email,
-        phone: input.phone
+    if (req.headers["test"] == "true") {
+        customers = customersStub;
     }
-    customers.setCustomerById(data, id).then(() => {
-        res.redirect('/customers');
-    });
+    let id = req.params.id;
+    customers.getCustomerById(id)
+        .then((rows) => {
+            res.send(rows);
+        }).catch(() => {
+            res.send('Error!');
+        });
 });
+
+router.post('/save_edit/:id', (req, res) => {
+    if (req.headers["test"] == "true") {
+        customers = customersStub;
+    }
+    let id = req.params.id;
+    var input = JSON.parse(JSON.stringify(req.body));
+    customers.setCustomerById(input, id)
+        .then((result) => {
+            res.send(result);
+        }).catch(() => {
+            res.send('Error!');
+        });
+});
+
 router.get('/delete_customer/:id', (req, res) => {
-    let id = req.params.id;  
-    customers.removeCustomerById(id).then(() => {
-        res.redirect('/customers');
+    if (req.headers["test"] == "true") {
+        customers = customersStub;
+    }
+    let id = req.params.id;
+    customers.removeCustomerById(id).then((result) => {
+        res.send(result);
+    }).catch(() => {
+        res.send('Error!');
     });
 });
 

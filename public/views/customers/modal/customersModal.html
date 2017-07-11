@@ -1,0 +1,54 @@
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-click="$hide();" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Customers</h4>
+            </div>
+            <div class="modal-body">
+                <form name="customersForm" novalidate>
+                    <!--TODO : Require filed validator and warning system-->
+                    <div class="form-group">
+                        <label for="nameInput">Name</label>
+                        <input name="customersName" ng-model="modalData.name" type="text" class="form-control" id="nameInput" placeholder="Enter Name"
+                            ng-minlength="5" ng-maxlength="20" required>
+                        <div ng-messages="customersForm.customersName.$error" style="color:maroon" role="alert">
+                            <div ng-message="required">You did not enter your Name</div>
+                            <div ng-message="minlength">Your Name is too short</div>
+                            <div ng-message="maxlength">Your Name is too long</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nameInput">Address</label>
+                        <input name="customersAddress" ng-model="modalData.address" type="text" class="form-control" id="addressInput" placeholder="Enter Address"
+                            required>
+                        <div ng-messages="customersForm.customersAddress.$error" style="color:maroon" role="alert">
+                            <div ng-message="required">You did not enter your Address</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nameInput">Email</label>
+                        <input name="customersEmail" ng-model="modalData.email" type="email" class="form-control" id="emailInput" email placeholder="Enter Email"
+                            required>
+                        <div ng-messages="customersForm.customersEmail.$error" style="color:maroon" role="alert">
+                            <div ng-message="email">It's not Email</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nameInput">Phone</label>
+                        <input name="customersPhone" ng-model="modalData.phone" type="integer" class="form-control" id="phoneInput" placeholder="Enter Phone" ng-minlength="8" ng-pattern="/^[0-9]*$/" required
+                            >
+                        <div ng-messages="customersForm.customersPhone.$error" style="color:maroon" role="alert">
+                            <div ng-message="required">You did not enter a field</div>
+                            <div ng-message="minlength">Please enter your phone number</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+                <button type="button" class="btn btn-primary" ng-show="modalMode == 'create' || modalMode == 'edit'" ng-click="checkData();$hide();" ng-disabled="customersForm.$invalid">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,11 +5,11 @@ var expressLayouts = require('express-ejs-layouts');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var index = require('./api/index');
-var customers = require('./api/customers');
+var index = require('./routes/index');
+var customers = require('./routes/customers');
 
 
-var debug = require('debug')('Blank_GULP_Mean');
+var debug = require('debug')('Mgular');
 
 var app = express();
 
@@ -34,8 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/node_modules', express.static(path.resolve('./node_modules')));
 
 app.use('/', index);
-app.use('/customers',customers);
-
+app.use('/customers', customers);
 
 
 app.set('port', process.env.PORT || 3000);

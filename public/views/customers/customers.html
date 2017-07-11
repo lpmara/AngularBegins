@@ -3,14 +3,15 @@
     <div class="container">
         <div class="row" style="padding-top:5px;">
             <div class="pull-right">
-                <div class="btn btn-default" ng-click="checkCustomers()">Test</div>
+                <div>
+                    <span class="btn btn-primary" ng-click="showCustomers('create','xxx',0)">Create</span>
+                </div>
             </div>
             <div class="clearfix"></div>
         </div>
         <table class="table table-bordered table-hover" ng-init="readAllCustomers()">
             <th>
                 <tr>
-                    <td>ID</td>
                     <td>Name</td>
                     <td>Address</td>
                     <td>Phone</td>
@@ -18,13 +19,17 @@
                     <td colspan="7">Function</td>
                 </tr>
             </th>
-            <tr ng-repeat="customers in readCustomersData">
-                <td></td>
-                <td>{{customers.name}}</td>
-                <td>{{customers.address}}</td>
-                <td>{{customers.phone}}</td>
-                <td>{{customers.email}}</td>
-            </tr>
+
+
+
+                <tr ng-repeat="customers in readCustomersData">
+                    <td>{{customers.name}}</td>
+                    <td>{{customers.address}}</td>
+                    <td>{{customers.phone}}</td>
+                    <td>{{customers.email}}</td>
+                    <td><span class="btn btn-warning" ng-click="showCustomers('edit',customers.id,$index)">Edit</span></td>
+                    <td><span class="btn btn-danger" ng-click="deleteCustomers(customers.id,$index)">Delete</span></td>
+                </tr>
         </table>
     </div>
 </div>

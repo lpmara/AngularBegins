@@ -1,5 +1,5 @@
 (function() {
-angular.module("MainApp", ['ngRoute', 'ngSanitize', 'ngResource', 'ngAnimate', 'mgcrea.ngStrap'])
+angular.module("MainApp", ['ngRoute', 'ngSanitize', 'ngResource', 'ngAnimate', 'mgcrea.ngStrap', 'ngMessages'])
 angular.module("MainApp").config(function ($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(false).hashPrefix('!');
     $routeProvider
